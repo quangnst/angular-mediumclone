@@ -5,7 +5,6 @@ import { Observable } from "rxjs";
 
 import { registerAction } from 'src/app/auth/store/actions';
 import { isSubmittingSelector } from '../../store/selectors';
-import { AuthStateInterface } from '../../types/authState.interface';
 
 @Component({
   selector: 'mc-register',
