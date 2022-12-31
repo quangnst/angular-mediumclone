@@ -21,13 +21,20 @@ export class AuthService {
     const url = environment.apiUrl + '/users';
     return this.http
       .post<AuthResponseInterface>(url, data)
-      .pipe(map(this.getUser));
+      .pipe(map(this.getUser))
   }
 
   login(data: LoginRequestInterface): Observable<CurrentUserInterface> {
     const url = environment.apiUrl + '/users/login';
     return this.http
       .post<AuthResponseInterface>(url, data)
-      .pipe(map(this.getUser));
+      .pipe(map(this.getUser))
+  }
+
+  getCurrentUser(): Observable<CurrentUserInterface> {
+    const url = environment.apiUrl + '/users';
+    return this.http
+      .get(url)
+      .pipe(map(this.getUser))
   }
 }
