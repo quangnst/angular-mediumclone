@@ -12,7 +12,7 @@ import { of } from 'rxjs';
 import { GetFeedResponseInterface } from '../../types/getFeedResponse.interface';
 
 @Injectable()
-export class LoginEffect {
+export class GetFeedEffect {
   constructor(
     private actions$: Actions,
     private feedService: FeedService,
