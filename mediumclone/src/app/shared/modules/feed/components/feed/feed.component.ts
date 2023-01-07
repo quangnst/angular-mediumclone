@@ -6,7 +6,7 @@ import { environment } from "src/environments/environment";
 import { getFeedAction } from "../../store/actions/getFeed.action";
 import { errorSelector, feedSelector, isLoadingSelector } from "../../store/selectors";
 import { GetFeedResponseInterface } from "../../types/getFeedResponse.interface";
-
+import queryString from "query-string";
 @Component({
   selector: 'mc-feed',
   templateUrl: './feed.component.html',
@@ -28,22 +28,30 @@ export class FeedComponent implements OnInit, OnDestroy {
   constructor(private store: Store, private router: Router, private route: ActivatedRoute){}
 
   ngOnInit() {
-    this.initializeListeners()
     this.initializeValues()
-    this.fetchData()
+    this.initializeListeners()
   }
 
   ngOnDestroy() {
     this.queryParamsSubscription.unsubscribe()
   }
 
-  fetchData(): void {
-    this.store.dispatch(getFeedAction({url: this.apiUrlProps}))
+  fetchFeed(): void {
+    const offset = this.currentPage * this.limit - this.limit
+    const parseUrl = queryString.parseUrl(this.apiUrlProps)
+    const stringifiedParams = queryString.stringify({
+      limit: this.limit,
+      offset,
+      ...parseUrl.query
+    })
+    const apiUrlWithParams = `${this.apiUrlProps}?${stringifiedParams}`
+    this.store.dispatch(getFeedAction({url: apiUrlWithParams}))
   }
 
   initializeListeners(): void {
     this.queryParamsSubscription = this.route.queryParams.subscribe((params: Params) => {
       this.currentPage = Number(params['page'] || '1')
+      this.fetchFeed()
     })
   }
 
